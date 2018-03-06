@@ -1,7 +1,7 @@
 def error = null
 currentBuild.result = "SUCCESS"
 
-def processflow_dir = "/p/user_pub/e3sm/jenkins/acme_diags"
+def processflow_dir = "/p/user_pub/e3sm/jenkins/acme_processflow"
 def jenkins_dir = "${processflow_dir}/acme_jenkins"
 def workdir = "${processflow_dir}/testdir/${env.JOB_NAME}/test_${env.BUILD_NUMBER}"
 
