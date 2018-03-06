@@ -34,8 +34,8 @@ class CondaSetup:
 
         self.workdir = workdir
 
-        #url = "https://repo.continuum.io/miniconda/"
-        url = "https://repo.continuum.io/archive/"
+        url = "https://repo.continuum.io/miniconda/"
+        
         conda_script = os.path.join(workdir, 'miniconda.sh')
         
         if sys.platform == 'darwin':
