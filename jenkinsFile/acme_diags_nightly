@@ -1,0 +1,45 @@
+def error = null
+currentBuild.result = "SUCCESS"
+
+def acme_diags_dir = "/p/user_pub/e3sm/jenkins/acme_diags"
+def jenkins_dir = "${acme_diags_dir}/acme_jenkins"
+def workdir = "${acme_diags_dir}/testdir/${env.JOB_NAME}/test_${env.BUILD_NUMBER}"
+
+def scripts_dir = "${jenkins_dir}/scripts"
+def install_conda = "${scripts_dir}/install_conda.py"
+def install_acme_diags = "${scripts_dir}/install_acme_diags.py"
+def run_acme_diags = "${scripts_dir}/run_acme_diags.py"
+
+def url = "https://github.com/ACME-Climate/acme_jenkins"
+try {
+    stage('git_clone') {
+       node('master') {
+          // TEMPORARY
+          // sh "mkdir ${acme_diags_dir}"
+          //sh "cp -r /p/user_pub/e3sm/muryanto1/acme_jenkins ${jenkins_dir}"
+          // for now clone from jenkins branch
+          //sh "git clone ${url} ${jenkins_dir}"
+          //sh "cd ${jenkins_dir}; git pull -u"
+       }
+    }
+    stage('conda') {
+       node('master') {
+          sh "python ${install_conda} -w ${workdir}"
+       }
+
+    }
+    stage('install_acme_diags') {
+       node('master') {
+          sh "python ${install_acme_diags} -w ${workdir}"
+       }
+    }
+    stage('run_tests') {
+       node('master') {
+          sh "python ${run_acme_diags} -w ${workdir}"
+       }
+    }
+
+} catch (caughtException) {
+    error = caughtException
+    currentBuild.result = "FAILURE"
+}
