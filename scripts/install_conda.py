@@ -26,7 +26,7 @@ try:
     conda_setup = CondaSetup.CondaSetup(workdir)
 
 except:
-    print("FAIL in installing miniconda")
+    print("FAIL in installing anaconda")
     status = FAILURE
     sys.exit(status)
 

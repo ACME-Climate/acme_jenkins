@@ -4,6 +4,10 @@ import argparse
 
 thisDir = os.path.abspath(os.path.dirname(__file__))
 sys.path.append(thisDir + '/../modules/')
+import CondaSetup
+import ProcessFlowSetup
+
+from Const import *
 from Util import *
 
 parser = argparse.ArgumentParser(description="install processflow",

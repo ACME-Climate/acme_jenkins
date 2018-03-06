@@ -16,7 +16,7 @@ parser = argparse.ArgumentParser(description="install acme_diags",
                                  formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
 parser.add_argument("-w", "--workdir",
-                    help="working directory where miniconda and acme_diags were installed")
+                    help="working directory where anaconda and acme_diags were installed")
 
 args = parser.parse_args()
 workdir = args.workdir

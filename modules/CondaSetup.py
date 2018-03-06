@@ -34,14 +34,15 @@ class CondaSetup:
 
         self.workdir = workdir
 
-        url = "https://repo.continuum.io/miniconda/"
+        #url = "https://repo.continuum.io/miniconda/"
+        url = "https://repo.continuum.io/archive/"
         conda_script = os.path.join(workdir, 'miniconda.sh')
         
         if sys.platform == 'darwin':
             source_script = url + 'Miniconda3-latest-MacOSX-x86_64.sh'
             cmd = "curl {src} -o {dest}".format(src=source_script, dest=conda_script)
         else:            
-            source_script = url + 'Miniconda3-4.3.21-Linux-x86_64.sh'
+            source_script = url + 'Miniconda3-latest-Linux-x86_64.sh'
             cmd = "wget {src} -O {dest}".format(src=source_script, dest=conda_script)
 
         ret_code = run_cmd(cmd, True, False, False)
@@ -76,7 +77,7 @@ class CondaSetup:
             if ret_code != SUCCESS:
                 raise Exception("FAIL...{c}".format(c=cmd))
 
-        cmd = "{c} config --set anaconda_upload no".format(c=conda_cmd)
+        cmd = "{c} config --set conda_upload no".format(c=conda_cmd)
         ret_code = run_cmd(cmd)
         return(ret_code)
 
