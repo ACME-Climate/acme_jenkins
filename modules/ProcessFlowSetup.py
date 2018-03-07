@@ -94,4 +94,4 @@ class ProcessFlowSetup:
 
         # check version of processflow
         ret_code = self.__check_version(version)
-        sys.exit(ret_code)
+        return(ret_code)
