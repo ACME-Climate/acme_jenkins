@@ -29,6 +29,8 @@ class ProcessFlowSetup:
         elif version == 'latest':
             version_str = 'acme'
         
+        conda_path = self.conda_path
+        env = self.env
         # print out whole version of processflow -- just for logging purpose
         cmds_list = []
         cmd = "conda list processflow | grep '^processflow'"

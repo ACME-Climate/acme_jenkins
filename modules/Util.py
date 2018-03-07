@@ -2,6 +2,7 @@ import os
 import subprocess
 import shlex
 import shutil
+import time
 from Const import *
 
 #                                                                                                                 
@@ -79,7 +80,6 @@ def git_clone_repo(workdir, repo_name, branch='master', repo_dir=None):
         print("FAIL...{failed_cmd}".format(failed_cmd=cmd))
         return ret_code
 
-    print("xxx branch: " + branch)
     if branch != 'master' and repo_name != 'uvcdat-testdata' and branch != 'cdat-3.0.beta':
         
         cmd = 'git describe --tags --abbrev=0'
@@ -93,26 +93,62 @@ def git_clone_repo(workdir, repo_name, branch='master', repo_dir=None):
     return(ret_code, repo_dir)
 
 def run_in_conda_env(conda_path, env, cmds_list):
-    """
-    conda_path - path to comda command
-    env - conda environment name
-    cmds_list - a list of commands
-    This function runs all the commands in cmds_list in the specified
-    conda environment.
-    """
 
-    add_path = "export PATH={path}:$PATH".format(path=conda_path)
-    cmds = "{add_path_cmd}; source activate {e}".format(add_path_cmd=add_path,
-                                                       e=env)
+    add_path_cmd = "export PATH={path}:$PATH".format(path=conda_path)
+    activate_cmd = "source activate {env}".format(env=env)
+    cmds = None
     for a_cmd in cmds_list:
-        cmds = "{existing}; {new}".format(existing=cmds, new=a_cmd)        
-    cmds = "{existing}; source deactivate".format(existing=cmds)
+        if cmds is None:
+            cmds = a_cmd
+        else:
+            cmds = "{existing}; {new_cmd}".format(existing=cmds, new_cmd=a_cmd)
 
-    cmd = "bash -c \"{the_cmds}\"".format(the_cmds=cmds)
-    print("CMD: " + cmd)
+    print("xxx cmds: " + cmds)
+    deactivate_cmd = 'source deactivate'
+
+    cmd = "bash -c \"{add_path}; {act}; {cmds}; {deact}\"".format(add_path=add_path_cmd,
+                                                                  act=activate_cmd,
+                                                                  cmds=cmds,
+                                                                  deact=deactivate_cmd)
+    print("CMD: {c}".format(c=cmd))
     ret_code = os.system(cmd)
     print(ret_code)
     return(ret_code)
+
+def run_in_conda_env_capture_output(conda_path, env, cmds_list):
+
+    current_time = time.localtime(time.time())
+    time_str = time.strftime("%b.%d.%Y.%H:%M:%S", current_time)
+    tmp_file = "/tmp/processFlow.{curr_time}".format(curr_time=time_str)
+
+    add_path_cmd = "export PATH={path}:$PATH".format(path=conda_path)
+    activate_cmd = "source activate {env}".format(env=env)
+    cmds = None
+    for a_cmd in cmds_list:
+        if cmds == None:
+            cmds = a_cmd
+        else:
+            cmds = "{existing}; {new_cmd}".format(existing=cmds, new_cmd=a_cmd)
+
+    deactivate_cmd = 'source deactivate'
+
+    cmd = "bash -c \"{add_path}; {act}; {cmds}; {deact}\"".format(add_path=add_path_cmd,
+                                                                  act=activate_cmd,
+                                                                  cmds=cmds,
+                                                                  deact=deactivate_cmd)
+
+    cmd = "{the_cmd} > {output_file}".format(the_cmd=cmd, output_file=tmp_file)
+
+    ret_code = os.system(cmd)
+    print(ret_code)
+    if ret_code != SUCCESS:
+        return(FAILURE, None)
+
+    with open(tmp_file) as f:
+        output = f.readlines()
+    #os.remove(tmp_file)
+    return(ret_code, output)
+
 
 def get_tag_name_of_repo(repo_dir):
 

@@ -29,13 +29,13 @@ try:
     # we can then make these as arguments to the script
     env_name = 'processflow'
     processflow_setup = ProcessFlowSetup.ProcessFlowSetup(conda_setup, env_name, version)
+    status = SUCCESS
 
 except Exception as err:
     print("FAIL in creating processflow environment")
     print("Error message: {e}".format(e=err))
     status = FAILURE
     sys.exit(status)
-
 
 sys.exit(status)
 
