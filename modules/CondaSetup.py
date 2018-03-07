@@ -77,7 +77,7 @@ class CondaSetup:
             if ret_code != SUCCESS:
                 raise Exception("FAIL...{c}".format(c=cmd))
 
-        cmd = "{c} config --set conda_upload no".format(c=conda_cmd)
+        cmd = "{c} config --set anaconda_upload no".format(c=conda_cmd)
         ret_code = run_cmd(cmd)
         return(ret_code)
 
