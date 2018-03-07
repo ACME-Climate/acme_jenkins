@@ -16,11 +16,10 @@ class ProcessFlowSetup:
             self.workdir = conda_setup.workdir
             self.conda_path = conda_setup.conda_path
             self.env = env_name
-            return
-
-        self.workdir = conda_setup.workdir
-        self.conda_path = conda_setup.conda_path
-        self.create_env(env_name, version)
+        else:
+            self.workdir = conda_setup.workdir
+            self.conda_path = conda_setup.conda_path
+            self.create_env(env_name, version)
 
     def __check_version(self, version):
     
@@ -70,7 +69,8 @@ class ProcessFlowSetup:
                                                                    c=channels)
         ret_code = run_cmd(cmd, True, False, True)
         if ret_code != SUCCESS:
-            sys.exit(FAILURE)
+            print("FAIL...{c}".format(c=cmd))
+            return(ret_code)
 
         self.env = env_name
         # update to version -- 'nightly' or 'latest'
@@ -85,12 +85,18 @@ class ProcessFlowSetup:
             cnd = 'conda update -c acme -c conda-forge -c uvcdat processflow'
         cmds_list.append(cmd)
         ret_code = run_in_conda_env(conda_path, env_name, cmds_list)
+        if ret_code != SUCCESS:
+            print("FAIL...{c}".format(c=cmd))
+            return(ret_code)
      
         # check that we can activate processflow env
         cmd = 'conda list processflow'
         cmds_list = []
         cmds_list.append(cmd)
         ret_code = run_in_conda_env(conda_path, env_name, cmds_list)
+        if ret_code != SUCCESS:
+            print("FAIL...{c}".format(c=cmd))
+            return(ret_code)
 
         # check version of processflow
         ret_code = self.__check_version(version)
