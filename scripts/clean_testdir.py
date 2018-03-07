@@ -3,18 +3,19 @@ import os
 import time
 import argparse
 import shutil
+
+thisDir = os.path.abspath(os.path.dirname(__file__))
+sys.path.append(thisDir + '/../modules/')
+
 from Util import *
 
 parser = argparse.ArgumentParser(description="install conda",
                                  formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-
 parser.add_argument("-d", "--testdir",
                     help="parent testdir where old dated test subdirectories are to be cleaned up")
-
 parser.add_argument("-n", "--ndays",
                     action="store", type=int,
                     help="number of days, test directories older than specified <ndays> will be removed")
-
 args = parser.parse_args()
 
 testdir = args.testdir
