@@ -101,3 +101,11 @@ class ProcessFlowSetup:
         # check version of processflow
         ret_code = self.__check_version(version)
         return(ret_code)
+
+    def run_processflow(self, conf_file):
+        cmd = "processflow.py -c {conf}".format(conf=conf_file)
+        cmds_list = []
+        cmds_list.append(cmd)
+        ret_code = run_in_conda_env(self.conda_path, self.env, cmds_list)
+        return(ret_code)
+
