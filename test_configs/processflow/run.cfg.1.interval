@@ -59,7 +59,7 @@ native_grid_cleanup = 1
     # this will run ncclimo for both 5 and 10
     ncclimo = 5
     # this will run time series only at 10
-    #timeseries = 5
+    timeseries = 5
     # this will run amwg only at 5
     amwg = 5
     # this will turn off the coupled diag
