@@ -2,14 +2,14 @@ def error = null
 currentBuild.result = "SUCCESS"
 
 def processflow_dir = "/p/user_pub/e3sm/jenkins/acme_processflow"
-def jenkins_dir = "${processflow_dir}/acme_jenkins"
+def jenkins_dir = "${processflow_dir}/e3sm_jenkins"
 def workdir = "${processflow_dir}/testdir/${env.JOB_NAME}/test_${env.BUILD_NUMBER}"
 
 def scripts_dir = "${jenkins_dir}/scripts"
 def install_conda = "${scripts_dir}/install_conda.py"
 def install_processflow = "${scripts_dir}/install_processflow.py"
-
-def url	= "https://github.com/ACME-Climate/acme_jenkins"
+def run_processflow = "${scripts_dir}/run_processflow.py"
+def url		    = "https://github.com/ACME-Climate/e3sm_jenkins"
 
 
 try {
@@ -32,10 +32,13 @@ try {
           sh "python ${install_processflow} -w ${workdir} -v 'nightly'"
        }
     }
-
+    stage('run_processflow') {
+       node('master') {
+          sh "export MODULESHOME=/usr/share/Modules; python ${run_processflow} -w ${workdir} -v 'nightly' -c '1.interval'"
+       }
+    }
 } catch (caughtException) {
     error = caughtException
     currentBuild.result = "FAILURE"
 }
 
-    
