@@ -17,6 +17,12 @@ parser = argparse.ArgumentParser(description="install acme_diags",
 
 parser.add_argument("-w", "--workdir",
                     help="working directory where miniconda and acme_diags env will be created")
+parser.add_argument("-b", "--branch",
+                    help="git branch to pull the yml file from")
+parser.add_argument("-e", "--env_name",
+                    help="env name")
+parser.add_argument("-f", "--env_file_name",
+                    help="env yaml file name")
 
 args = parser.parse_args()
 workdir = args.workdir
@@ -28,9 +34,14 @@ try:
 
     # for now hard code till we want to expand
     # we can then make these as arguments to the script
-    env_name = 'acme_diags_master'
-    env_file_url = 'https://raw.githubusercontent.com/ACME-Climate/acme_diags/master/conda/acme_diags_env_dev.yml'
-    acme_diags_setup = ACMEDIAGSSetup.ACMEDIAGSSetup(conda_setup, env_name, env_file_url)
+    env_name = args.env_name
+    base_url = 'https://raw.githubusercontent.com/ACME-Climate/acme_diags'
+    env_file_url = "{base_url}/{branch}/conda/{f}".format(base_url=base_url,
+                                                          branch=args.branch,
+                                                          f=args.env_file_name)
+    #env_file_url = 'https://raw.githubusercontent.com/ACME-Climate/acme_diags/master/conda/acme_diags_env_dev.yml'
+    acme_diags_setup = ACMEDIAGSSetup.ACMEDIAGSSetup(conda_setup, env_name)
+    acme_diags_setup.create_env_from_yaml_file(env_name, env_file_url)
 
 except Exception as err:
     print("FAIL in creating acme_diags environment")
