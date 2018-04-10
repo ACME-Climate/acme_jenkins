@@ -3,7 +3,7 @@ import os
 import argparse
 
 thisDir = os.path.abspath(os.path.dirname(__file__))
-sys.path.append(thisDir + '/../modules/')
+sys.path.append(thisDir + '/../../modules/')
 
 import CondaSetup
 import ACMEDIAGSSetup
@@ -25,6 +25,7 @@ parser.add_argument("-t", "--test_type", choices=['system', 'all_sets'],
 parser.add_argument("-b", "--git_branch", default='master',
                     help="git branch to get tests from")
 parser.add_argument("-m", "--obs_or_model", choices=['model_vs_obs', 'model_vs_model'],
+                    nargs='?',
                     help="run model_vs_obs or model_vs_model")
 parser.add_argument("-d", "--backend", choices=['vcs', 'mpl'],
                     help="backend type: 'vcs' or 'mpl'")

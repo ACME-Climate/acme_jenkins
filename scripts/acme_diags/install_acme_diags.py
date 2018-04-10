@@ -3,7 +3,7 @@ import os
 import argparse
 
 thisDir = os.path.abspath(os.path.dirname(__file__))
-sys.path.append(thisDir + '/../modules/')
+sys.path.append(thisDir + '/../../modules/')
 
 import CondaSetup
 import ACMEDIAGSSetup

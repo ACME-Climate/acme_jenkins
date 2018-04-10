@@ -91,23 +91,57 @@ class ACMEDIAGSSetup:
 
         return(ret_code)
 
-    def run_system_tests(self, backend=None):
-        test_dir = os.path.join(self.workdir, 'acme_diags', 'tests', 'system')
-        cmds_list = []
-        cmds_list.append("cd {d}".format(d=test_dir))
-        if backend:
-        cmds_list.append("acme_diags -d all_sets.cfg")
-        ret_code = run_in_conda_env(self.conda_path, self.env, cmds_list)
-
-        cmds_list.append(cmd)
-        cmd = "echo '================================================================'"
-        cmds_list.append(cmd)
-        cmds_list.append("cd {d}".format(d=test_dir))
-        cmds_list.append("acme_diags -d all_sets.cfg --backend vcs")
-        ret_code = run_in_conda_env(self.conda_path, self.env, cmds_list)
+    def __prep_sbatch_file(self, results_base_dir, results_dir_prefix, time_stamp, cmd):
         
+        sbatch_file_prefix = os.path.join(results_base_dir, 
+                                          "{d}_{prefix}_{t}".format(d=results_base_dir,
+                                                                    prefix=results_dir_prefix,
+                                                                    t=time_stamp))
+        sbatch_file = "{f}.sh".format(f=sbatch_file_prefix)
+        sbatch_out = "{f}.out".format(f=sbatch_file_prefix)
+        sbatch_err = "{f}.err".format(f=sbatch_file_prefix)
 
-        return(ret_code)
+        f = open(sbatch_file, "w")
+        f.write("#!/bin/bash\n")
+        f.write("#SBATCH -N 1\n")
+        f.write("#SBATCH -t 0-06:00\n")
+        f.write("#SBATCH -o {out_file}\n".format(out_file=sbatch_out))
+        f.write("#SBATCH -o {err_file}\n".format(err_file=sbatch_err))
+        f.write("{c}\n".format(c=cmd))
+        f.close()
+        return(sbatch_file)
+
+    def run_system_tests(self, backend=None):
+
+        results_base_dir = "/var/www/acme/acme-diags/e3sm_diags_jenkins"
+        if backend:
+            results_dir_prefix = "{env}_system_{backend}".format(env=self.env,
+                                                                 backend=backend)
+        else:
+            results_dir_prefix = "{env}_system".format(env=self.env)
+
+        current_time = time.localtime(time.time())
+        time_str = time.strftime("%Y.%m.%d-%H:%M:%S", current_time)
+
+        test_dir = os.path.join(self.workdir, 'acme_diags', 'tests', 'system')
+
+
+        cmd1 = "cd {d}".format(d=test_dir)
+        if backend:
+            cmd2 = "acme_diags -d all_sets.cfg --backend vcs"
+        else:
+            cmd2 = "acme_diags -d all_sets.cfg"
+
+        cmd = "{c1};\n{c2}".format(c1=cmd1, c2=cmd2)
+        sbatch_file = self.__prep_sbatch_file(results_base_dir, 
+                                              results_dir_prefix,
+                                              time_str,
+                                              cmd)
+        print("DEBUG...sbatch_file: {f}".format(f=sbatch_file))
+        #cmds_list = ["sbatch {f}".format(f=sbatch_file)]
+        #ret_code = run_in_conda_env(self.conda_path, self.env, cmds_list)
+        ret_code = 0
+        return ret_code
 
         
     def run_sets_tests(self, obs_or_model, backend, git_branch):
@@ -143,11 +177,16 @@ class ACMEDIAGSSetup:
         if ret_code != SUCCESS:
             return ret_code        
         
-        cmds_list = []
         cmd = "acme_diags -p {t} --backend {b} --results_dir {d}".format(t=test_script_path,
                                                                          b=backend,
                                                                          d=results_dir)
-        cmds_list.append(cmd)
-        ret_code = run_in_conda_env(self.conda_path, self.env, cmds_list)
+        
+        sbatch_file = self.__prep_sbatch_file(results_base_dir, 
+                                              results_dir_prefix,
+                                              time_str,
+                                              cmd)
+        print("DEBUG...sbatch_file: {f}".format(f=sbatch_file))
+        #cmds_list = ["sbatch {f}".format(f=sbatch_file)]
+        #ret_code = run_in_conda_env(self.conda_path, self.env, cmds_list)
         return ret_code
-                
+    

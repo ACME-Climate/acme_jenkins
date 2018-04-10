@@ -63,7 +63,7 @@ class ProcessFlowSetup:
         conda_cmd = os.path.join(conda_path, 'conda')
 
         
-        channels = "-c acme -c conda-forge -c uvcdat"
+        channels = "-c acme -c conda-forge -c cdat"
         cmd = "{conda} create --name {env} {c} processflow".format(conda=conda_cmd,
                                                                    env=env_name,
                                                                    c=channels)
@@ -80,9 +80,9 @@ class ProcessFlowSetup:
 
         # update to nightly
         if version == 'nightly':
-            cmd = 'conda update -c acme/label/nightly -c acme -c conda-forge -c uvcdat processflow'
+            cmd = 'conda update -c acme/label/nightly -c acme -c conda-forge -c cdat processflow'
         else:
-            cnd = 'conda update -c acme -c conda-forge -c uvcdat processflow'
+            cnd = 'conda update -c acme -c conda-forge -c cdat processflow'
         cmds_list.append(cmd)
         ret_code = run_in_conda_env(conda_path, env_name, cmds_list)
         if ret_code != SUCCESS:
