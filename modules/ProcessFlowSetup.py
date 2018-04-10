@@ -90,8 +90,10 @@ class ProcessFlowSetup:
             return(ret_code)
      
         # check that we can activate processflow env
-        cmd = 'conda list processflow'
         cmds_list = []
+        cmd = 'conda list'
+        cmds_list.append(cmd)
+        cmd = 'conda list processflow'
         cmds_list.append(cmd)
         ret_code = run_in_conda_env(conda_path, env_name, cmds_list)
         if ret_code != SUCCESS:
