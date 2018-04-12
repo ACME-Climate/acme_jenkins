@@ -32,8 +32,8 @@ def run_command(cmd, join_stderr=True, shell_cmd=False, verbose=True, cwd=None):
         decoded_str = read.decode('utf-8')
         out.append(decoded_str)
         if verbose == True:
-            print(decoded_str)
-
+            #print(decoded_str)
+            print(read)
     ret_code = P.returncode
     return(ret_code, out)
                                                                                               
