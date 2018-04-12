@@ -1,5 +1,6 @@
 import shutil
 import time
+import re
 
 from Const import *
 from Util import *
@@ -94,9 +95,8 @@ class ACMEDIAGSSetup:
     def __prep_sbatch_file(self, results_base_dir, results_dir_prefix, time_stamp, cmd):
         
         sbatch_file_prefix = os.path.join(results_base_dir, 
-                                          "{d}_{prefix}_{t}".format(d=results_base_dir,
-                                                                    prefix=results_dir_prefix,
-                                                                    t=time_stamp))
+                                          "{prefix}_{t}".format(prefix=results_dir_prefix,
+                                                                t=time_stamp))
         sbatch_file = "{f}.sh".format(f=sbatch_file_prefix)
         sbatch_out = "{f}.out".format(f=sbatch_file_prefix)
         sbatch_err = "{f}.err".format(f=sbatch_file_prefix)
@@ -110,6 +110,56 @@ class ACMEDIAGSSetup:
         f.write("{c}\n".format(c=cmd))
         f.close()
         return(sbatch_file)
+
+    def __wait_till_slurm_job_completes(self, job_id):
+        
+        cmd = "scontrol show job {id} | grep JobState".format(id=job_id)
+        return_code = SUCCESS
+        time.sleep(30)
+        while True:
+            ret_code, out = run_in_conda_env_capture_output(self.conda_path, 
+                                                            self.env, [cmd])
+            match_obj = re.match(r'\s+JobState=(\S+)\s+Reason', out[0])
+            if match_obj:
+                job_state = match_obj.group(1)
+                if job_state == 'COMPLETED':
+                    print("job {id} completed!".format(id=job_id))
+                    break
+                else:
+                    print("job {id} is in {state} state".format(id=job_id,
+                                                                state=job_state))
+                    time.sleep(120)
+            else:
+                print("Cannot get slurm job state for job id: {id}".format(id=job_id))
+                ret_code = FAILURE
+                break
+
+        return ret_code
+
+
+    def __submit_cmd_to_slurm_and_wait(self, results_base_dir, results_dir_prefix, time_str, cmd):
+
+        sbatch_file = self.__prep_sbatch_file(results_base_dir, 
+                                              results_dir_prefix,
+                                              time_str,
+                                              cmd)
+        print("DEBUG...sbatch_file: {f}".format(f=sbatch_file))
+        # TEMPORARY
+        return SUCCESS
+        cmds_list = ["sbatch {f}".format(f=sbatch_file)]
+        ret_code, sbatch_output = run_in_conda_env_capture_output(self.conda_path, self.env, cmds_list)
+        # Submitted batch job 6389
+        match_obj = re.match(r'Submitted\s+batch\s+\job\s+(\d+)', sbatch_output[0])
+        if match_obj:
+            job_id = match_obj.group(1)
+            print("slurm job id: {id}".format(id=job_id))
+        else:
+            print("FAIL in submitting acme_diags to slurm")
+            return FAILURE
+
+        # wait till job completes
+        ret_code = self.__wait_till_slurm_job_completes(job_id)
+        return ret_code
 
     def run_system_tests(self, backend=None):
 
@@ -159,8 +209,6 @@ class ACMEDIAGSSetup:
         results_dir = "{base_dir}/{prefix}_{time_stamp}".format(base_dir=results_base_dir,
                                                                 prefix=results_dir_prefix,
                                                                 time_stamp=time_str)
-        print("xxx results_dir: ", results_dir)
-        
         test_script = "all_sets_nightly_{o_m}.py".format(o_m=obs_or_model)
         base_url = "https://raw.githubusercontent.com/ACME-Climate/acme_diags"
         workdir = self.workdir
@@ -181,12 +229,11 @@ class ACMEDIAGSSetup:
                                                                          b=backend,
                                                                          d=results_dir)
         
-        sbatch_file = self.__prep_sbatch_file(results_base_dir, 
-                                              results_dir_prefix,
-                                              time_str,
-                                              cmd)
-        print("DEBUG...sbatch_file: {f}".format(f=sbatch_file))
-        #cmds_list = ["sbatch {f}".format(f=sbatch_file)]
-        #ret_code = run_in_conda_env(self.conda_path, self.env, cmds_list)
+        ret_code = self.__submit_cmd_to_slurm_and_wait(results_base_dir, 
+                                                       results_dir_prefix, 
+                                                       time_str, cmd)
+        print("Result directory: ", results_dir)
+        run_cmd("ls {d}".format(d=results_dir), True, False, True)
+
         return ret_code
     

@@ -11,6 +11,10 @@ import ACMEDIAGSSetup
 from Const import *
 from Util import *
 
+#
+# python scripts/acme_diags/run_acme_diags_tests.py -w $WORKDIR -e acme_diags_env_dev -t all_sets -b master -m "model_vs_obs" -d vcs -i
+#
+
 parser = argparse.ArgumentParser(description="install acme_diags",
                                  formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
@@ -46,9 +50,10 @@ except:
 env_name = args.env_name
 
 acme_diags_setup = ACMEDIAGSSetup.ACMEDIAGSSetup(conda_setup, env_name)
+status = acme_diags_setup.get_tests(args.build_tests)
 
 if args.test_type == 'system':
-    status = acme_diags_setup.get_tests(args.build_tests)
+
     if status != SUCCESS:
         sys.exit(status)
     status = acme_diags_setup.run_system_tests()

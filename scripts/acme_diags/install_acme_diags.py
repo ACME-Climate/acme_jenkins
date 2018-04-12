@@ -15,11 +15,11 @@ from Util import *
 parser = argparse.ArgumentParser(description="install acme_diags",
                                  formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
-parser.add_argument("-w", "--workdir",
+parser.add_argument("-w", "--workdir", required=True,
                     help="working directory where miniconda and acme_diags env will be created")
-parser.add_argument("-b", "--branch",
+parser.add_argument("-b", "--branch", default='master',
                     help="git branch to pull the yml file from")
-parser.add_argument("-e", "--env_name",
+parser.add_argument("-e", "--env_name", required=True,
                     help="env name")
 parser.add_argument("-f", "--env_file_name",
                     help="env yaml file name")
@@ -31,7 +31,7 @@ status = SUCCESS
 
 try:
     conda_setup = CondaSetup.CondaSetup(workdir)
-
+    print("after getting conda setup")
     # for now hard code till we want to expand
     # we can then make these as arguments to the script
     env_name = args.env_name
