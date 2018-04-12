@@ -30,8 +30,8 @@ class CondaSetup:
                 return(SUCCESS, self.conda_path)
         else:
             print("mkdir {d}".format(d=workdir))
-            os.mkdirs(workdir)
-
+            os.mkdir(workdir)
+            print("after creating {d}".format(d=workdir))
         self.workdir = workdir
 
         url = "https://repo.continuum.io/miniconda/"
