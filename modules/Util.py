@@ -8,28 +8,29 @@ from Const import *
 #                                                                                                              # following code is mostly copied from cdms/run_tests.py                                                       #                   
 
 def run_command(cmd, join_stderr=True, shell_cmd=False, verbose=True, cwd=None):
-    print("CMD: " + cmd)
+    print("CMD: {c}".format(c=cmd))
     if isinstance(cmd, str):
         cmd = shlex.split(cmd)
 
     if join_stderr:
-        stderr = subprocess.STDOUT
+        stderr_setting = subprocess.STDOUT
     else:
-        stderr = subprocess.PIPE
+        stderr_setting = subprocess.PIPE
 
     if cwd is None:
         current_wd = os.getcwd()
     else:
         current_wd = cwd
 
-    P = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=stderr,
+    P = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=stderr_setting,
         bufsize=0, cwd=current_wd, shell=shell_cmd)
     out = []
     while P.poll() is None:
         read = P.stdout.readline().rstrip()
-        out.append(read.decode('utf-8'))
+        decoded_str = read.decode('utf-8')
+        out.append(decoded_str)
         if verbose == True:
-            print(read)
+            print(decoded_str)
 
     ret_code = P.returncode
     return(ret_code, out)
