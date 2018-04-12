@@ -1,5 +1,5 @@
 import os
-import sys
+#import sys
 import subprocess
 import shlex
 import shutil
@@ -9,7 +9,7 @@ from Const import *
 #                                                                                                              # following code is mostly copied from cdms/run_tests.py                                                       #                   
 
 def run_command(cmd, join_stderr=True, shell_cmd=False, verbose=True, cwd=None):
-    sys.stdout.flush()
+    #sys.stdout.flush()
     print("CMD: {c}".format(c=cmd))
     if isinstance(cmd, str):
         cmd = shlex.split(cmd)
