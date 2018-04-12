@@ -144,8 +144,6 @@ class ACMEDIAGSSetup:
                                               time_str,
                                               cmd)
         print("DEBUG...sbatch_file: {f}".format(f=sbatch_file))
-        # TEMPORARY
-        return SUCCESS
         cmds_list = ["sbatch {f}".format(f=sbatch_file)]
         ret_code, sbatch_output = run_in_conda_env_capture_output(self.conda_path, self.env, cmds_list)
         # Submitted batch job 6389
