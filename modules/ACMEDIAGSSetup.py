@@ -30,7 +30,7 @@ class ACMEDIAGSSetup:
         env_file = os.path.join(self.workdir, yml_file_name)
         cmd = "wget {url} -O {env_file}".format(url=env_file_url,
                                                 env_file=env_file)
-        ret_code = run_cmd(cmd, True, False, True)
+        ret_code = run_cmd(cmd, True, False, False)
         if ret_code != SUCCESS:
             print("FAIL...{c}".format(c=cmd))
             return ret_code
