@@ -7,8 +7,10 @@ def workdir = "${acme_diags_dir}/testdir/${env.JOB_NAME}/test_${env.BUILD_NUMBER
 
 def scripts_dir = "${jenkins_dir}/scripts"
 def install_conda = "${scripts_dir}/install_conda.py"
-def install_acme_diags = "${scripts_dir}/install_acme_diags.py"
-def run_acme_diags = "${scripts_dir}/run_acme_diags_tests.py"
+def install_acme_diags = "${scripts_dir}/acme_diags/install_acme_diags.py"
+def run_acme_diags = "${scripts_dir}/acme_diags/run_acme_diags_tests.py"
+
+def url = "https://github.com/ACME-Climate/acme_jenkins"
 
 try {
     stage('git_clone') {

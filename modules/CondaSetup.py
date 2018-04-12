@@ -30,7 +30,7 @@ class CondaSetup:
                 return(SUCCESS, self.conda_path)
         else:
             print("mkdir {d}".format(d=workdir))
-            os.mkdir(workdir)
+            os.mkdirs(workdir)
 
         self.workdir = workdir
 
