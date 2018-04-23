@@ -106,9 +106,11 @@ class ACMEDIAGSSetup:
         f.write("#SBATCH -N 1\n")
         f.write("#SBATCH -t 0-06:00\n")
         f.write("#SBATCH -o {out_file}\n".format(out_file=sbatch_out))
-        f.write("#SBATCH -o {err_file}\n".format(err_file=sbatch_err))
+        f.write("#SBATCH -e {err_file}\n".format(err_file=sbatch_err))
         f.write("{c}\n".format(c=cmd))
         f.close()
+        print("Output file: {f}".format(f=sbatch_out))
+        print("Error file : {f}".format(f=sbatch_err))
         return(sbatch_file)
 
     def __wait_till_slurm_job_completes(self, job_id):
@@ -124,6 +126,9 @@ class ACMEDIAGSSetup:
                 job_state = match_obj.group(1)
                 if job_state == 'COMPLETED':
                     print("job {id} completed!".format(id=job_id))
+                    break
+                elif job_state == 'FAILED':
+                    print("job {id} FAILED!".format(id=job_id))
                     break
                 else:
                     print("job {id} is in {state} state".format(id=job_id,
@@ -144,6 +149,8 @@ class ACMEDIAGSSetup:
                                               time_str,
                                               cmd)
         print("DEBUG...sbatch_file: {f}".format(f=sbatch_file))
+        print("results_base_dir: {d}".format(d=results_base_dir))
+        print("results_dir_prefix: {p}".format(p=results_dir_prefix))
         cmds_list = ["sbatch {f}".format(f=sbatch_file)]
         ret_code, sbatch_output = run_in_conda_env_capture_output(self.conda_path, self.env, cmds_list)
         # Submitted batch job 6389
@@ -172,7 +179,7 @@ class ACMEDIAGSSetup:
         time_str = time.strftime("%Y.%m.%d-%H:%M:%S", current_time)
 
         test_dir = os.path.join(self.workdir, 'acme_diags', 'tests', 'system')
-
+        results_dir = os.path.join(test_dir, 'all_sets')
 
         cmd1 = "cd {d}".format(d=test_dir)
         if backend:
@@ -181,16 +188,13 @@ class ACMEDIAGSSetup:
             cmd2 = "acme_diags -d all_sets.cfg"
 
         cmd = "{c1};\n{c2}".format(c1=cmd1, c2=cmd2)
-        sbatch_file = self.__prep_sbatch_file(results_base_dir, 
-                                              results_dir_prefix,
-                                              time_str,
-                                              cmd)
-        print("DEBUG...sbatch_file: {f}".format(f=sbatch_file))
-        #cmds_list = ["sbatch {f}".format(f=sbatch_file)]
-        #ret_code = run_in_conda_env(self.conda_path, self.env, cmds_list)
-        ret_code = 0
-        return ret_code
 
+        ret_code = self.__submit_cmd_to_slurm_and_wait(results_base_dir, 
+                                                       results_dir_prefix, 
+                                                       time_str, cmd)
+        run_cmd("ls {d}".format(d=test_dir), True, False, True)
+        run_cmd("ls {d}".format(d=results_dir), True, False, True)
+        return ret_code
         
     def run_sets_tests(self, obs_or_model, backend, git_branch):
         """

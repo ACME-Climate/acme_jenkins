@@ -1,0 +1,45 @@
+def error = null
+currentBuild.result = "SUCCESS"
+
+def acme_diags_dir = "/p/user_pub/e3sm/jenkins/acme_diags"
+def jenkins_dir = "${acme_diags_dir}/acme_jenkins"
+def workdir = "${acme_diags_dir}/testdir/${env.JOB_NAME}/test_${env.BUILD_NUMBER}"
+
+def scripts_dir = "${jenkins_dir}/scripts"
+def install_conda = "${scripts_dir}/install_conda.py"
+def install_acme_diags = "${scripts_dir}/acme_diags/install_acme_diags.py"
+def run_acme_diags = "${scripts_dir}/acme_diags/run_acme_diags_tests.py"
+
+def url = "https://github.com/ACME-Climate/acme_jenkins"
+
+try {
+    stage('git_clone') {
+       node('master') {
+          sh "rm -rf ${jenkins_dir}"
+          sh "git clone ${url} ${jenkins_dir}"
+          sh "cd ${jenkins_dir}; git pull -u"
+       }
+    }
+    stage('conda') {
+       node('master') {
+          sh "python ${install_conda} -w ${workdir}"
+       }
+    }
+
+    stage('install_acme_diags') {
+       node('master') {
+          sh "python ${install_acme_diags} -w ${workdir} -e acme_diags_env_dev -f acme_diags_env_dev.yml"
+       }
+    }
+    stage('run_model_vs_obs_mpl') {
+       node('master') {
+          sh "python ${run_acme_diags} -w ${workdir} -e acme_diags_env_dev -t all_sets -m model_vs_obs -d mpl"
+       }
+    }
+
+} catch (caughtException) {
+    error = caughtException
+    currentBuild.result = "FAILURE"
+}
+
+
