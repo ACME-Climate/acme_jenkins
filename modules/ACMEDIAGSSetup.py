@@ -69,7 +69,7 @@ class ACMEDIAGSSetup:
         # build_tests - set it to True if we should build the test
         #    i.e. run 'python setup.py install'
         #
-        url = "https://github.com/ACME-Climate/acme_diags.git"
+        url = "https://github.com/E3SM-Project/acme_diags.git"
         repo_dir = os.path.join(self.workdir, 'acme_diags')
 
         # check if repo_dir exists already
@@ -213,7 +213,8 @@ class ACMEDIAGSSetup:
                                                                 prefix=results_dir_prefix,
                                                                 time_stamp=time_str)
         test_script = "all_sets_nightly_{o_m}.py".format(o_m=obs_or_model)
-        base_url = "https://raw.githubusercontent.com/ACME-Climate/acme_diags"
+        #base_url = "https://raw.githubusercontent.com/ACME-Climate/acme_diags"
+        base_url = "https://raw.githubusercontent.com/E3SM-Project/acme_diags"
         workdir = self.workdir
         test_script_url = "{base_url}/{branch}/tests/{test_script}".format(base_url=base_url,
                                                                      branch=git_branch,
