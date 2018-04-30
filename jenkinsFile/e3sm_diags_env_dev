@@ -28,12 +28,12 @@ try {
 
     stage('install_acme_diags') {
        node('master') {
-          sh "python ${install_acme_diags} -w ${workdir} -e acme_diags_env -f acme_diags_env.yml"
+          sh "python ${install_acme_diags} -w ${workdir} -e e3sm_diags_env_dev -f e3sm_diags_env_dev.yml"
        }
     }
     stage('run_model_vs_obs_mpl') {
        node('master') {
-          sh "python ${run_acme_diags} -w ${workdir} -e acme_diags_env -t all_sets -m model_vs_obs -d mpl"
+          sh "python ${run_acme_diags} -w ${workdir} -e e3sm_diags_env_dev -t all_sets -m model_vs_obs -d mpl"
        }
     }
 

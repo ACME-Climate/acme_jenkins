@@ -35,11 +35,10 @@ try:
     # for now hard code till we want to expand
     # we can then make these as arguments to the script
     env_name = args.env_name
-    base_url = 'https://raw.githubusercontent.com/ACME-Climate/acme_diags'
+    base_url = 'https://github.com/E3SM-Project/acme_diags'
     env_file_url = "{base_url}/{branch}/conda/{f}".format(base_url=base_url,
                                                           branch=args.branch,
                                                           f=args.env_file_name)
-    #env_file_url = 'https://raw.githubusercontent.com/ACME-Climate/acme_diags/master/conda/acme_diags_env_dev.yml'
     acme_diags_setup = ACMEDIAGSSetup.ACMEDIAGSSetup(conda_setup, env_name)
     acme_diags_setup.create_env_from_yaml_file(env_name, env_file_url)
 
