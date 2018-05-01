@@ -230,7 +230,7 @@ class ACMEDIAGSSetup:
             return ret_code        
         
         num_workers = 4
-        cmd = "acme_diags -p {t} --backend {b} --results_dir {d} --num_workers={w}".format(t=test_script_path,
+        cmd = "acme_diags -p {t} --backend {b} --results_dir {d} --num_workers {w}".format(t=test_script_path,
                                                                                            b=backend,
                                                                                            w=num_workers,
                                                                                            d=results_dir)
