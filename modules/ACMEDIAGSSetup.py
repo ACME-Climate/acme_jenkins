@@ -100,7 +100,7 @@ class ACMEDIAGSSetup:
         sbatch_file = "{f}.sh".format(f=sbatch_file_prefix)
         sbatch_out = "{f}.out".format(f=sbatch_file_prefix)
         sbatch_err = "{f}.err".format(f=sbatch_file_prefix)
-        num_workers = 4
+        num_workers = 1
 
         f = open(sbatch_file, "w")
         f.write("#!/bin/bash\n")
@@ -229,7 +229,7 @@ class ACMEDIAGSSetup:
         if ret_code != SUCCESS:
             return ret_code        
         
-        num_workers = 4
+        num_workers = 1
         cmd = "acme_diags -p {t} --backend {b} --results_dir {d} --num_workers {w}".format(t=test_script_path,
                                                                                            b=backend,
                                                                                            w=num_workers,
