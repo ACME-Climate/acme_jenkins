@@ -140,6 +140,7 @@ def run_in_conda_env_capture_output(conda_path, env, cmds_list):
 
     cmd = "{the_cmd} > {output_file}".format(the_cmd=cmd, output_file=tmp_file)
 
+    print("CMD: {c}".format(c=cmd))
     ret_code = os.system(cmd)
     print(ret_code)
     if ret_code != SUCCESS:
@@ -147,6 +148,9 @@ def run_in_conda_env_capture_output(conda_path, env, cmds_list):
 
     with open(tmp_file) as f:
         output = f.readlines()
+        
+    for aLine in output:
+        print("xxx aLine: {l}".format(l=aLine))
     #os.remove(tmp_file)
     return(ret_code, output)
 
