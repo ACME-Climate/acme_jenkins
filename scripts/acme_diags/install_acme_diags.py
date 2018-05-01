@@ -35,7 +35,8 @@ try:
     # for now hard code till we want to expand
     # we can then make these as arguments to the script
     env_name = args.env_name
-    base_url = 'https://github.com/E3SM-Project/acme_diags'
+    base_url = "https://raw.githubusercontent.com/E3SM-Project/acme_diags"
+    #base_url = 'https://github.com/E3SM-Project/acme_diags'
     env_file_url = "{base_url}/{branch}/conda/{f}".format(base_url=base_url,
                                                           branch=args.branch,
                                                           f=args.env_file_name)
