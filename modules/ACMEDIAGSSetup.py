@@ -119,26 +119,32 @@ class ACMEDIAGSSetup:
         cmd = "scontrol show job {id} | grep JobState".format(id=job_id)
         return_code = SUCCESS
         time.sleep(30)
-        while True:
+        n_no_output = 0
+
+        while True and n_no_output <= 10:
             ret_code, out = run_in_conda_env_capture_output(self.conda_path, 
                                                             self.env, [cmd])
-            match_obj = re.match(r'\s+JobState=(\S+)\s+Reason', out[0])
-            if match_obj:
-                job_state = match_obj.group(1)
-                if job_state == 'COMPLETED':
-                    print("job {id} completed!".format(id=job_id))
-                    break
-                elif job_state == 'FAILED':
-                    print("job {id} FAILED!".format(id=job_id))
-                    break
-                else:
-                    print("job {id} is in {state} state".format(id=job_id,
-                                                                state=job_state))
+            if out != None:
+                match_obj = re.match(r'\s+JobState=(\S+)\s+Reason', out[0])
+                if match_obj:
+                    job_state = match_obj.group(1)
+                    if job_state == 'COMPLETED':
+                        print("job {id} completed!".format(id=job_id))
+                        break
+                    elif job_state == 'FAILED':
+                        print("job {id} FAILED!".format(id=job_id))
+                        break
+                    else:
+                        print("job {id} is in {state} state".format(id=job_id,
+                                                                    state=job_state))
                     time.sleep(120)
+                else:
+                    print("Cannot get slurm job state for job id: {id}".format(id=job_id))
+                    ret_code = FAILURE
+                    break
             else:
-                print("Cannot get slurm job state for job id: {id}".format(id=job_id))
-                ret_code = FAILURE
-                break
+                n_no_output += 1
+                time.sleep(10)
 
         return ret_code
 
