@@ -124,7 +124,7 @@ class ACMEDIAGSSetup:
         while True and n_no_output <= 10:
             ret_code, out = run_in_conda_env_capture_output(self.conda_path, 
                                                             self.env, [cmd])
-            if out != None:
+            if out:
                 match_obj = re.match(r'\s+JobState=(\S+)\s+Reason', out[0])
                 if match_obj:
                     job_state = match_obj.group(1)
@@ -143,6 +143,7 @@ class ACMEDIAGSSetup:
                     ret_code = FAILURE
                     break
             else:
+                print("No output...sleep for 10 seconds...")
                 n_no_output += 1
                 time.sleep(10)
 
