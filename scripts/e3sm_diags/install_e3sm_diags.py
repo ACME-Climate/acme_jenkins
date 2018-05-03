@@ -29,6 +29,8 @@ workdir = args.workdir
 
 status = SUCCESS
 
+sys.stdout.flush()
+
 try:
     conda_setup = CondaSetup.CondaSetup(workdir)
     print("after getting conda setup")

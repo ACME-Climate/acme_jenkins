@@ -38,6 +38,8 @@ args = parser.parse_args()
 workdir = args.workdir
 status = SUCCESS
 
+sys.stdout.flush()
+
 try:
     conda_setup = CondaSetup.CondaSetup(workdir)
 except:
