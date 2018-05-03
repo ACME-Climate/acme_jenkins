@@ -31,8 +31,8 @@ parser.add_argument("-b", "--git_branch", default='master',
 parser.add_argument("-m", "--obs_or_model", choices=['model_vs_obs', 'model_vs_model'],
                     nargs='?',
                     help="run model_vs_obs or model_vs_model")
-parser.add_argument("-d", "--backend", choices=['vcs', 'mpl'],
-                    help="backend type: 'vcs' or 'mpl'")
+parser.add_argument("-d", "--backend",
+                    help="backend type: 'vcs' or 'mpl' -- only need to specify if running sets test")
 
 args = parser.parse_args()
 workdir = args.workdir

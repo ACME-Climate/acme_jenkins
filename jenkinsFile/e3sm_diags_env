@@ -32,26 +32,31 @@ try {
           sh "python ${install_e3sm_diags} -w ${workdir} -e e3sm_diags_env -f e3sm_diags_env.yml"
        }
     }
-    stage('run_model_vs_obs_vcs') {
+    stage('run_system_tests') {
        node('master') {
-          sh "python ${run_e3sm_diags} -w ${workdir} -e e3sm_diags_env -t all_sets -m model_vs_obs -d vcs"
+          sh "python ${run_e3sm_diags} -w ${workdir} -t system"
        }
     }
-    stage('run_model_vs_obs_mpl') {
-       node('master') {
-          sh "python ${run_e3sm_diags} -w ${workdir} -e e3sm_diags_env -t all_sets -m model_vs_obs -d mpl"
-       }
-    }
-    stage('run_model_vs_model_vcs') {
-       node('master') {
-          sh "python ${run_e3sm_diags} -w ${workdir} -e e3sm_diags_env -t all_sets -m model_vs_model -d vcs"
-       }
-    }
-    stage('run_model_vs_model_mpl') {
-       node('master') {
-          sh "python ${run_e3sm_diags} -w ${workdir} -e e3sm_diags_env -t all_sets -m model_vs_model -d mpl"
-       }
-    }
+    //stage('run_model_vs_obs_vcs') {
+    //   node('master') {
+    //      sh "python ${run_e3sm_diags} -w ${workdir} -e e3sm_diags_env -t all_sets -m model_vs_obs -d vcs"
+    //   }
+    //}
+    //stage('run_model_vs_obs_mpl') {
+    //   node('master') {
+    //      sh "python ${run_e3sm_diags} -w ${workdir} -e e3sm_diags_env -t all_sets -m model_vs_obs -d mpl"
+    //   }
+    //}
+    //stage('run_model_vs_model_vcs') {
+    //   node('master') {
+    //      sh "python ${run_e3sm_diags} -w ${workdir} -e e3sm_diags_env -t all_sets -m model_vs_model -d vcs"
+    //   }
+    //}
+    //stage('run_model_vs_model_mpl') {
+    //   node('master') {
+    //      sh "python ${run_e3sm_diags} -w ${workdir} -e e3sm_diags_env -t all_sets -m model_vs_model -d mpl"
+    //   }
+    //}
 
 } catch (caughtException) {
     error = caughtException
