@@ -1,3 +1,4 @@
+import sys
 import shutil
 import time
 import re
@@ -5,12 +6,12 @@ import re
 from Const import *
 from Util import *
 
+sys.stdout.flush()
+
 class ACMEDIAGSSetup:
     def __init__(self, conda_setup, env_name):
 
         workdir = conda_setup.workdir
-        print("DEBUG xxx workdir: {w}, env: {e}".format(w=workdir,
-                                                        e=env_name))
         env_dir = os.path.join(workdir, 'miniconda', 'envs', env_name)
         if os.path.isdir(env_dir):
             env_name = self.env
