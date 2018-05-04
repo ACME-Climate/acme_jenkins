@@ -3,8 +3,7 @@ currentBuild.result = "SUCCESS"
 
 def e3sm_diags_dir = "/p/user_pub/e3sm/jenkins/e3sm_diags"
 def jenkins_dir = "${e3sm_diags_dir}/acme_jenkins"
-//def workdir = "${e3sm_diags_dir}/testdir/${env.JOB_NAME}/test_${env.BUILD_NUMBER}"
-def workdir = "/p/user_pub/e3sm/jenkins/e3sm_diags/testdir/e3sm_diags_env/test_106"
+def workdir = "${e3sm_diags_dir}/testdir/${env.JOB_NAME}/test_${env.BUILD_NUMBER}"
 
 def scripts_dir = "${jenkins_dir}/scripts"
 def install_conda = "${scripts_dir}/install_conda.py"
@@ -16,7 +15,7 @@ def url = "https://github.com/E3SM-Project/e3sm_jenkins"
 try {
     stage('git_clone') {
        node('master') {
-          //sh "mkdir -p ${e3sm_diags_dir}"
+          sh "mkdir -p ${e3sm_diags_dir}"
           sh "rm -rf ${jenkins_dir}"
           sh "git clone ${url} ${jenkins_dir}"
           sh "cd ${jenkins_dir}; git pull -u"
@@ -25,8 +24,8 @@ try {
     stage('conda') {
        node('master') {
           echo "xxx install conda xxx"
-          //sh "mkdir -p ${e3sm_diags_dir}/testdir/${env.JOB_NAME}"
-          //sh "python ${install_conda} -w ${workdir}"
+          sh "mkdir -p ${e3sm_diags_dir}/testdir/${env.JOB_NAME}"
+          sh "python ${install_conda} -w ${workdir}"
        }
     }
     stage('install_e3sm_diags') {
@@ -37,7 +36,7 @@ try {
     }
     stage('run_system_tests') {
        node('master') {
-          sh "python ${run_e3sm_diags} -w ${workdir} -t system"
+          sh "python ${run_e3sm_diags} -w ${workdir} -t system -e e3sm_diags_env"
        }
     }
     stage('run_system_tests_vcs') {
@@ -48,25 +47,25 @@ try {
     stage('run_model_vs_obs_vcs') {
        node('master') {
           echo "xxx run_model_vs_obs_vcs xxx"
-          //sh "python ${run_e3sm_diags} -w ${workdir} -e e3sm_diags_env -t all_sets -m model_vs_obs --backend vcs"
+          sh "python ${run_e3sm_diags} -w ${workdir} -e e3sm_diags_env -t all_sets -m model_vs_obs --backend vcs"
        }
     }
     stage('run_model_vs_obs_mpl') {
        node('master') {
           echo "xxx run_model_vs_obs_mpl xxx"
-          //sh "python ${run_e3sm_diags} -w ${workdir} -e e3sm_diags_env -t all_sets -m model_vs_obs --backend mpl"
+          sh "python ${run_e3sm_diags} -w ${workdir} -e e3sm_diags_env -t all_sets -m model_vs_obs --backend mpl"
        }
     }
     stage('run_model_vs_model_vcs') {
        node('master') {
           echo "xxx run_model_vs_model_vcs xxx"
-          //sh "python ${run_e3sm_diags} -w ${workdir} -e e3sm_diags_env -t all_sets -m model_vs_model --backend vcs"
+          sh "python ${run_e3sm_diags} -w ${workdir} -e e3sm_diags_env -t all_sets -m model_vs_model --backend vcs"
        }
     }
     stage('run_model_vs_model_mpl') {
        node('master') {
           echo "xxx run_model_vs_model_mpl xxx"
-          //sh "python ${run_e3sm_diags} -w ${workdir} -e e3sm_diags_env -t all_sets -m model_vs_model --backend mpl"
+          sh "python ${run_e3sm_diags} -w ${workdir} -e e3sm_diags_env -t all_sets -m model_vs_model --backend mpl"
        }
     }
 
