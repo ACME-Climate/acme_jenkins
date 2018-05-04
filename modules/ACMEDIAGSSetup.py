@@ -9,6 +9,8 @@ class ACMEDIAGSSetup:
     def __init__(self, conda_setup, env_name):
 
         workdir = conda_setup.workdir
+        print("DEBUG xxx workdir: {w}, env: {e}".format(w=workdir,
+                                                        e=env_name))
         env_dir = os.path.join(workdir, 'miniconda', 'envs', env_name)
         if os.path.isdir(env_dir):
             print("Environment {e} is already created.".format(e=env_name))

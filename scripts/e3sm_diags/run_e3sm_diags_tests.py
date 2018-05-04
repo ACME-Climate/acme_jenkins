@@ -32,7 +32,7 @@ parser.add_argument("-m", "--obs_or_model", choices=['model_vs_obs', 'model_vs_m
                     nargs='?',
                     help="run model_vs_obs or model_vs_model")
 parser.add_argument("-d", "--backend",
-                    help="backend type: 'vcs' or 'mpl' -- only need to specify if running sets test")
+                    help="backend type: 'vcs' or 'mpl' -- for sets tests; 'vcs' or specify nothing for system tests")
 
 args = parser.parse_args()
 workdir = args.workdir
