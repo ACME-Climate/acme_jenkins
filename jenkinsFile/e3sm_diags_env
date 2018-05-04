@@ -39,7 +39,7 @@ try {
     }
     stage('run_system_tests_vcs') {
        node('master') {
-          sh "python ${run_e3sm_diags} -w ${workdir} -t system --backend vcs"
+          sh "python ${run_e3sm_diags} -w ${workdir} -e e3sm_diags_env -t system --backend vcs"
        }
     }
     stage('run_model_vs_obs_vcs') {

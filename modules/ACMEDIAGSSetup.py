@@ -13,8 +13,9 @@ class ACMEDIAGSSetup:
 
         workdir = conda_setup.workdir
         env_dir = os.path.join(workdir, 'miniconda', 'envs', env_name)
+        print("xxx DEBUG DEBUG...env_dir: {e}".format(e=env_dir)
         if os.path.isdir(env_dir):
-            env_name = self.env
+            self.env = env_name
             print("Environment {e} is already created.".format(e=env_name))
             self.workdir = conda_setup.workdir
             self.conda_path = conda_setup.conda_path
@@ -33,7 +34,7 @@ class ACMEDIAGSSetup:
         env_file = os.path.join(self.workdir, yml_file_name)
         cmd = "wget {url} -O {env_file}".format(url=env_file_url,
                                                 env_file=env_file)
-        ret_code = run_cmd(cmd, True, False, False)
+        ret_code = run_cmd(cmd, True, False, True)
         if ret_code != SUCCESS:
             print("FAIL...{c}".format(c=cmd))
             return ret_code
