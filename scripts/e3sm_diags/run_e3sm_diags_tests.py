@@ -20,8 +20,7 @@ parser = argparse.ArgumentParser(description="install acme_diags",
 
 parser.add_argument("-w", "--workdir",
                     help="working directory where anaconda and acme_diags were installed")
-parser.add_argument("-e", "--env_name", required=True
-                    help="environment name")
+parser.add_argument("-e", "--env_name", required=True, help="environment name")
 parser.add_argument("-i", "--build_tests", action='store_true',
                     help="whether tests should be built first when running system tests")
 parser.add_argument("-t", "--test_type", choices=['system', 'all_sets'],

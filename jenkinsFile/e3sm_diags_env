@@ -3,7 +3,8 @@ currentBuild.result = "SUCCESS"
 
 def e3sm_diags_dir = "/p/user_pub/e3sm/jenkins/e3sm_diags"
 def jenkins_dir = "${e3sm_diags_dir}/acme_jenkins"
-def workdir = "${e3sm_diags_dir}/testdir/${env.JOB_NAME}/test_${env.BUILD_NUMBER}"
+//def workdir = "${e3sm_diags_dir}/testdir/${env.JOB_NAME}/test_${env.BUILD_NUMBER}"
+def workdir = "/p/user_pub/e3sm/jenkins/e3sm_diags/testdir/e3sm_diags_env/test_106"
 
 def scripts_dir = "${jenkins_dir}/scripts"
 def install_conda = "${scripts_dir}/install_conda.py"
@@ -15,7 +16,7 @@ def url = "https://github.com/E3SM-Project/e3sm_jenkins"
 try {
     stage('git_clone') {
        node('master') {
-          sh "mkdir -p ${e3sm_diags_dir}"
+          //sh "mkdir -p ${e3sm_diags_dir}"
           sh "rm -rf ${jenkins_dir}"
           sh "git clone ${url} ${jenkins_dir}"
           sh "cd ${jenkins_dir}; git pull -u"
@@ -23,12 +24,14 @@ try {
     }
     stage('conda') {
        node('master') {
-          sh "mkdir -p ${e3sm_diags_dir}/testdir/${env.JOB_NAME}"
-          sh "python ${install_conda} -w ${workdir}"
+          echo "xxx install conda xxx"
+          //sh "mkdir -p ${e3sm_diags_dir}/testdir/${env.JOB_NAME}"
+          //sh "python ${install_conda} -w ${workdir}"
        }
     }
     stage('install_e3sm_diags') {
        node('master') {
+          echo "xxx install_e3sm_diags xxx"
           sh "python ${install_e3sm_diags} -w ${workdir} -e e3sm_diags_env -f e3sm_diags_env.yml"
        }
     }
