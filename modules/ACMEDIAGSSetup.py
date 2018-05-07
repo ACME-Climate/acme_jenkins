@@ -104,11 +104,12 @@ class ACMEDIAGSSetup:
         sbatch_file = "{f}.sh".format(f=sbatch_file_prefix)
         sbatch_out = "{f}.out".format(f=sbatch_file_prefix)
         sbatch_err = "{f}.err".format(f=sbatch_file_prefix)
-        num_workers = 1
+        num_workers = 16
 
         f = open(sbatch_file, "w")
         f.write("#!/bin/bash\n")
-        f.write("#SBATCH -N {w}\n".format(w=num_workers))
+        f.write("#SBATCH -N 1\n")
+        f.write("#SBATCH -n {w}\n".format(w=num_workers))
         f.write("#SBATCH -t 0-06:00\n")
         f.write("#SBATCH -o {out_file}\n".format(out_file=sbatch_out))
         f.write("#SBATCH -e {err_file}\n".format(err_file=sbatch_err))
@@ -240,7 +241,7 @@ class ACMEDIAGSSetup:
         if ret_code != SUCCESS:
             return ret_code        
         
-        num_workers = 1
+        num_workers = 16
         cmd = "acme_diags -p {t} --backend {b} --results_dir {d} --num_workers {w}".format(t=test_script_path,
                                                                                            b=backend,
                                                                                            w=num_workers,

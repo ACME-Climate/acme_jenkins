@@ -29,7 +29,7 @@ class CondaSetup:
             if self.conda_path != None and os.path.isdir(self.conda_path) == True:
                 return(SUCCESS, self.conda_path)
         else:
-            print("mkdir {d}".format(d=workdir))
+            print("mkdir -p {d}".format(d=workdir))
             os.mkdir(workdir)
             print("after creating {d}".format(d=workdir))
         self.workdir = workdir
