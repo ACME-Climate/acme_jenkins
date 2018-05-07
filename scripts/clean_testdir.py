@@ -36,8 +36,7 @@ for a_file in os.listdir(testdir):
         print("Removing {f}".format(f=the_file))
         #shutil.rmtree(the_file)
         # os.unlink(the_file)
-        if os.path.isdir(the_file):
-            cmd = "/bin/rm -rf {to_be_removed}".format(to_be_removed=the_file)
-            #cmd = "ls -l {to_be_removed}".format(to_be_removed=the_file)
-            ret_code = run_cmd(cmd, True, False, True)
+        #if os.path.isdir(the_file):
+            #cmd = "/bin/rm -rf {to_be_removed}".format(to_be_removed=the_file)
+            #ret_code = run_cmd(cmd, True, False, True)
     
