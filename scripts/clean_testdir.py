@@ -30,6 +30,7 @@ seconds = ndays * 24 * 3600
 now = time.time()
 for a_file in os.listdir(testdir):
     the_file = os.path.join(testdir, a_file)
+    print("CHECKING...: {f}".format(f=the_file))
     if os.stat(the_file).st_mtime < (now - seconds):
  
         print("FOUND...: {f}".format(f=the_file))
