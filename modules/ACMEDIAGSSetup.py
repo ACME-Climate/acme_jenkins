@@ -196,9 +196,9 @@ class ACMEDIAGSSetup:
 
         cmd1 = "cd {d}".format(d=test_dir)
         if backend:
-            cmd2 = "acme_diags -d all_sets.cfg --backend vcs"
+            cmd2 = "e3sm_diags -d all_sets.cfg --backend vcs"
         else:
-            cmd2 = "acme_diags -d all_sets.cfg"
+            cmd2 = "e3sm_diags -d all_sets.cfg"
 
         cmd = "{c1};\n{c2}".format(c1=cmd1, c2=cmd2)
 
@@ -242,7 +242,7 @@ class ACMEDIAGSSetup:
             return ret_code        
         
         num_workers = 16
-        cmd = "acme_diags -p {t} --backend {b} --results_dir {d} --num_workers {w}".format(t=test_script_path,
+        cmd = "e3sm_diags -p {t} --backend {b} --results_dir {d} --num_workers {w}".format(t=test_script_path,
                                                                                            b=backend,
                                                                                            w=num_workers,
                                                                                            d=results_dir)
