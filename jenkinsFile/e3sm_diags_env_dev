@@ -7,7 +7,7 @@ def workdir = "${e3sm_diags_dir}/testdir/${env.JOB_NAME}/test_${env.BUILD_NUMBER
 
 def scripts_dir = "${jenkins_dir}/scripts"
 def install_conda = "${scripts_dir}/install_conda.py"
-def install_e3sm_diags = "${scripts_dir}/e3sm_diags/install_e3sm_diags.py"
+def install_e3sm_diags = "${scripts_dir}/e3sm_diags/install_e3sm_diags_from_yaml_file.py"
 def run_e3sm_diags = "${scripts_dir}/e3sm_diags/run_e3sm_diags_tests.py"
 
 def url = "https://github.com/E3SM-Project/e3sm_jenkins"
@@ -38,12 +38,12 @@ try {
     }
     stage('run_system_tests') {
        node('master') {
-          sh "python ${run_e3sm_diags} -w ${workdir} -t system -e ${env_name}"
+          sh "python ${run_e3sm_diags} -w ${workdir} -t system -e ${env_name} -i"
        }
     }
     stage('run_system_tests_vcs') {
        node('master') {
-          sh "python ${run_e3sm_diags} -w ${workdir} -e ${env_name} -t system --backend vcs"
+          sh "python ${run_e3sm_diags} -w ${workdir} -e ${env_name} -t system --backend vcs -i"
        }
     }
     stage('run_model_vs_obs_vcs') {

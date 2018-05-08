@@ -7,13 +7,15 @@ def jenkins_dir = "${e3sm_diags_dir}/acme_jenkins"
 def workdir = "${e3sm_diags_dir}/testdir/${env.JOB_NAME}/test_${env.BUILD_NUMBER}"
 def scripts_dir = "${jenkins_dir}/scripts"
 
-def testdir = "/p/user_pub/e3sm/jenkins/e3sm_diags/testdir/e3sm_diags_env"
+def testdir1 = "/p/user_pub/e3sm/jenkins/e3sm_diags/testdir/e3sm_diags_env"
+def testdir2 = "/p/user_pub/e3sm/jenkins/e3sm_diags/testdir/e3sm_diags_env_dev"
 def cleanup_script = "${scripts_dir}/clean_testdir.py"
 
 try {
     stage('remove_old_testdir') {
        node('master') {
-           sh "python ${cleanup_script} --testdir ${testdir} --ndays 2"
+           sh "python ${cleanup_script} --testdir ${testdir1} --ndays 2"
+           sh "python ${cleanup_script} --testdir ${testdir2} --ndays 2"
        }
     }
 } catch (caughtException) {
