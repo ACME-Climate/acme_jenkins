@@ -27,6 +27,19 @@ class ACMEDIAGSSetup:
     def get_env_name(self):
         return self.env
 
+    def create_env_from_conda_channel(self, env_name, conda_label=None):
+        # conda create --name e3sm_diags acme_diags -c acme -c anaconda -c conda-forge -c cdat
+
+        if conda_label:
+            channel = "-c acme/label/{c} -c anaconda -c conda-forge -c cdat".format(c=conda_label)
+        else:
+            channel = "-c acme -c anaconda -c conda-forge -c cdat"
+
+        cmd = "conda create --name {e} e3sm_diags acme_diags {c}".format(e=env_name,
+                                                              c=channel)
+        ret_code = run_cmd(cmd, True, False, True)
+        return(ret_code)
+
     def create_env_from_yaml_file(self, env_name, env_file_url):
 
         # get the env yml file

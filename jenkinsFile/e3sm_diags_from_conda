@@ -1,0 +1,47 @@
+def error = null
+currentBuild.result = "SUCCESS"
+
+def e3sm_diags_dir = "/p/user_pub/e3sm/jenkins/e3sm_diags"
+def jenkins_dir = "${e3sm_diags_dir}/acme_jenkins"
+def workdir = "${e3sm_diags_dir}/testdir/${env.JOB_NAME}/test_${env.BUILD_NUMBER}"
+
+def scripts_dir = "${jenkins_dir}/scripts"
+def install_conda = "${scripts_dir}/install_conda.py"
+def install_e3sm_diags = "${scripts_dir}/e3sm_diags/install_e3sm_diags_from_conda_channel.py"
+def run_e3sm_diags = "${scripts_dir}/e3sm_diags/run_e3sm_diags_tests.py"
+
+def url = "https://github.com/E3SM-Project/e3sm_jenkins"
+def env_name = "e3sm_diags_env_dev"
+
+try {
+    stage('git_clone') {
+       node('master') {
+          sh "mkdir -p ${e3sm_diags_dir}"
+          sh "rm -rf ${jenkins_dir}"
+          sh "git clone ${url} ${jenkins_dir}"
+          sh "cd ${jenkins_dir}; git pull -u"
+       }
+    }
+    stage('conda') {
+       node('master') {
+          echo "xxx install conda xxx"
+          sh "mkdir -p ${e3sm_diags_dir}/testdir/${env.JOB_NAME}"
+          echo "xxx after mkdir mkdir -p ${e3sm_diags_dir}/testdir/${env.JOB_NAME}"
+          sh "python ${install_conda} -w ${workdir}"
+       }
+    }
+    stage('install_e3sm_diags') {
+       node('master') {
+          echo "xxx install_e3sm_diags xxx"
+          sh "python ${install_e3sm_diags} -w ${workdir} -e ${env_name}"
+       }
+    }
+    stage('run_system_tests') {
+       node('master') {
+          sh "python ${run_e3sm_diags} -w ${workdir} -t system -e ${env_name}"
+       }
+    }
+} catch (caughtException) {
+    error = caughtException
+    currentBuild.result = "FAILURE"
+}
