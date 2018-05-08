@@ -36,8 +36,9 @@ class ACMEDIAGSSetup:
             channel = "-c acme -c anaconda -c conda-forge -c cdat"
 
         conda_cmd = os.path.join(self.conda_path, 'conda')
-        cmd = "conda create --name {e} acme_diags {c}".format(e=env_name,
-                                                              c=channel)
+        cmd = "{conda} create --name {e} acme_diags {channel}".format(conda=conda_cmd,
+                                                                      e=env_name,
+                                                                      channel=channel)
         ret_code = run_cmd(cmd, True, False, True)
         print("CMD: {c}, ret_code: {ret_code}".format(c=cmd, ret_code=ret_code))
         return(ret_code)
