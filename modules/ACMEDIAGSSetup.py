@@ -38,6 +38,7 @@ class ACMEDIAGSSetup:
         cmd = "conda create --name {e} acme_diags {c}".format(e=env_name,
                                                               c=channel)
         ret_code = run_cmd(cmd, True, False, True)
+        print("CMD: {c}, ret_code: {ret_code}".format(c=cmd, ret_code=ret_code))
         return(ret_code)
 
     def create_env_from_yaml_file(self, env_name, env_file_url):
