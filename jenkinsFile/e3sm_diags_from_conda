@@ -11,7 +11,7 @@ def install_e3sm_diags = "${scripts_dir}/e3sm_diags/install_e3sm_diags_from_cond
 def run_e3sm_diags = "${scripts_dir}/e3sm_diags/run_e3sm_diags_tests.py"
 
 def url = "https://github.com/E3SM-Project/e3sm_jenkins"
-def env_name = "e3sm_diags_env_dev"
+def env_name = "acme_diags_conda_create"
 
 try {
     stage('git_clone') {

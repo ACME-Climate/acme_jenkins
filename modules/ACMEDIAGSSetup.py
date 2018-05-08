@@ -35,7 +35,7 @@ class ACMEDIAGSSetup:
         else:
             channel = "-c acme -c anaconda -c conda-forge -c cdat"
 
-        cmd = "conda create --name {e} e3sm_diags acme_diags {c}".format(e=env_name,
+        cmd = "conda create --name {e} acme_diags {c}".format(e=env_name,
                                                               c=channel)
         ret_code = run_cmd(cmd, True, False, True)
         return(ret_code)
