@@ -28,15 +28,14 @@ class ACMEDIAGSSetup:
         return self.env
 
     def create_env_from_conda_channel(self, env_name, conda_label=None):
-        # conda create --name e3sm_diags acme_diags -c acme -c anaconda -c conda-forge -c cdat
-
+        # conda create --name <name> e3sm_diags -c e3sm -c anaconda -c conda-forge -c cdat
         if conda_label:
-            channel = "-c acme/label/{c} -c anaconda -c conda-forge -c cdat".format(c=conda_label)
+            channel = "-c e3sm/label/{c} -c anaconda -c conda-forge -c cdat".format(c=conda_label)
         else:
-            channel = "-c acme -c anaconda -c conda-forge -c cdat"
+            channel = "-c e3sm -c anaconda -c conda-forge -c cdat"
 
         conda_cmd = os.path.join(self.conda_path, 'conda')
-        cmd = "{conda} create --name {e} acme_diags {channel}".format(conda=conda_cmd,
+        cmd = "{conda} create --name {e} e3sm_diags {channel}".format(conda=conda_cmd,
                                                                       e=env_name,
                                                                       channel=channel)
         ret_code = run_cmd(cmd, True, False, True)
