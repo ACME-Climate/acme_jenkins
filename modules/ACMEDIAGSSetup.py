@@ -194,6 +194,26 @@ class ACMEDIAGSSetup:
         ret_code = self.__wait_till_slurm_job_completes(job_id)
         return ret_code
 
+    def __check_test_result(self, results_base_dir, results_dir_prefix):
+        sbatch_file_prefix = os.path.join(results_base_dir, 
+                                          "{prefix}_{t}".format(prefix=results_dir_prefix,
+                                                                t=time_stamp))
+        sbatch_out = "{f}.out".format(f=sbatch_file_prefix)
+
+        str_to_grep = "Viewer HTML generated at:"
+        cmd = "tail -10 {output_file} | grep {grep_str}".format(output_file=sbatch_out,
+                                                                grep_str=str_to_grep)
+        ret_code = run_cmd(cmd, True, True, True)
+        if ret_code == SUCCESS:
+            print("Good...expected html is generated")
+        else:
+            sbatch_err = "{f}.err".format(f=sbatch_file_prefix)
+            print("FAIL...expected html's is not generated")
+            print("Please check output file: {output_file}".format(output_file=sbatch_out))
+            print("              error file: {error_file}".format(error_file=sbatch_err))
+
+        return(ret_code)
+
     def run_system_tests(self, backend=None):
 
         results_base_dir = "/var/www/acme/acme-diags/e3sm_diags_jenkins"
@@ -222,6 +242,14 @@ class ACMEDIAGSSetup:
                                                        time_str, cmd)
         run_cmd("ls {d}".format(d=test_dir), True, False, True)
         run_cmd("ls {d}".format(d=results_dir), True, False, True)
+
+        if ret_code != SUCCESS:
+            print("FAIL...submitting job to slurm and wait is failing...")
+            return(ret_code)
+
+        ret_code = self.__check_test_result(results_base_dir,
+                                            results_dir_prefix)
+
         return ret_code
         
     def run_sets_tests(self, obs_or_model, backend, git_branch):
@@ -267,6 +295,14 @@ class ACMEDIAGSSetup:
                                                        time_str, cmd)
         print("Result directory: ", results_dir)
         run_cmd("ls {d}".format(d=results_dir), True, False, True)
+
+        if ret_code != SUCCESS:
+            print("FAIL...submitting job to slurm and wait is failing...")
+            return(ret_code)
+
+        ret_code = self.__check_test_result(results_base_dir,
+                                            results_dir_prefix)
+
 
         return ret_code
     
