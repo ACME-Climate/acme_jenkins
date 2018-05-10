@@ -194,7 +194,7 @@ class ACMEDIAGSSetup:
         ret_code = self.__wait_till_slurm_job_completes(job_id)
         return ret_code
 
-    def __check_test_result(self, results_base_dir, results_dir_prefix):
+    def __check_test_result(self, results_base_dir, results_dir_prefix, time_stamp):
         sbatch_file_prefix = os.path.join(results_base_dir, 
                                           "{prefix}_{t}".format(prefix=results_dir_prefix,
                                                                 t=time_stamp))
@@ -248,7 +248,7 @@ class ACMEDIAGSSetup:
             return(ret_code)
 
         ret_code = self.__check_test_result(results_base_dir,
-                                            results_dir_prefix)
+                                            results_dir_prefix, time_str)
 
         return ret_code
         
