@@ -301,7 +301,7 @@ class ACMEDIAGSSetup:
             return(ret_code)
 
         ret_code = self.__check_test_result(results_base_dir,
-                                            results_dir_prefix)
+                                            results_dir_prefix, time_str)
 
 
         return ret_code
