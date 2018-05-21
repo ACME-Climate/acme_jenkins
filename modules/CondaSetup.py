@@ -12,8 +12,9 @@ class CondaSetup:
         self.workdir = workdir
         self.py_ver = py_ver
         os.system("uname -a")
+        self.__install_miniconda(workdir)
 
-    def install_miniconda(self):
+    def __install_miniconda(self):
 
         # create workdir if it does not exist
         workdir = self.workdir
