@@ -25,15 +25,15 @@ try {
     stage('conda') {
        node('master') {
           echo "xxx install conda xxx"
-          //sh "mkdir -p ${e3sm_diags_dir}/testdir/${env.JOB_NAME}"
-          //echo "xxx after mkdir mkdir -p ${e3sm_diags_dir}/testdir/${env.JOB_NAME}"
-          //sh "python ${install_conda} -w ${workdir}"
+          sh "mkdir -p ${e3sm_diags_dir}/testdir/${env.JOB_NAME}"
+          echo "xxx after mkdir mkdir -p ${e3sm_diags_dir}/testdir/${env.JOB_NAME}"
+          sh "python ${install_conda} -w ${workdir}"
        }
     }
     stage('install_e3sm_diags') {
        node('master') {
           echo "xxx install_e3sm_diags xxx"
-          //sh "python ${install_e3sm_diags} -w ${workdir} -e ${env_name}"
+          sh "python ${install_e3sm_diags} -w ${workdir} -e ${env_name}"
        }
     }
     stage('run_system_tests') {
