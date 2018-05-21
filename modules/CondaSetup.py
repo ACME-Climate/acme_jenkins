@@ -4,7 +4,7 @@ import sys
 from Util import *
 
 class CondaSetup:
-    def __init__(self, workdir, py_ver):
+    def __init__(self, workdir, py_ver='py2'):
         if os.path.isdir(workdir) == True:
             self.conda_path = workdir + '/miniconda/bin/'
         else:
