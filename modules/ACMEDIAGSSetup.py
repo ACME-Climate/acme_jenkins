@@ -212,7 +212,7 @@ class ACMEDIAGSSetup:
                                                                 t=time_stamp))
         sbatch_out = "{f}.out".format(f=sbatch_file_prefix)
 
-        str_to_grep = "Viewer HTML generated at:"
+        str_to_grep = "Viewer HTML generated at"
         #cmd = "tail -10 {output_file} | grep \"{grep_str}\"".format(output_file=sbatch_out,
         #                                                                   grep_str=str_to_grep)
         cmd = "grep \"{grep_str}\" {output_file}".format(output_file=sbatch_out,
