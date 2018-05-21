@@ -43,7 +43,7 @@ class CondaSetup:
             source_script = os.path.join(url, conda_script)
             cmd = "wget {src} -O {dest}".format(src=source_script, dest=conda_script_full_path)
 
-        ret_code = run_cmd(cmd, True, False, False)
+        ret_code = run_cmd(cmd, True, False, True)
         if ret_code != SUCCESS:
             print("FAIL..." + cmd)
             return(ret_code, None)
@@ -53,7 +53,7 @@ class CondaSetup:
                                                  dir=conda_dir)
 
         # run the command, set verbose=False 
-        ret_code = run_cmd(cmd, True, False, False)
+        ret_code = run_cmd(cmd, True, False, True)
         if ret_code != SUCCESS:
             print("FAIL...installing miniconda")
             return(ret_code, None)
@@ -72,12 +72,12 @@ class CondaSetup:
         # I am not sure if I need the following
         if sys.platform == 'darwin':
             cmd = "{c} update -y -q conda".format(c=conda_cmd)
-            ret_code = run_cmd(cmd, True, False, False)
+            ret_code = run_cmd(cmd, True, False, True)
             if ret_code != SUCCESS:
                 return(ret_code, None)
 
         cmd = "{c} config --set anaconda_upload no".format(c=conda_cmd)
-        ret_code = run_cmd(cmd)
+        ret_code = run_cmd(cmd, True, False, True)
         return(ret_code, conda_path)
 
 
