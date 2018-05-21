@@ -25,7 +25,7 @@ class CondaSetup:
                 return(SUCCESS, self.conda_path)
         else:
             print("DEBUG xxx...mkdir {w}".format(w=workdir))
-            os.mkdir(workdir)
+            os.makedirs(workdir)
 
         url = "https://repo.continuum.io/miniconda"
         conda_script = os.path.join(workdir, 'miniconda.sh')
