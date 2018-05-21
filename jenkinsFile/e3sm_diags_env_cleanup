@@ -9,6 +9,7 @@ def scripts_dir = "${jenkins_dir}/scripts"
 
 def testdir1 = "/p/user_pub/e3sm/jenkins/e3sm_diags/testdir/e3sm_diags_env"
 def testdir2 = "/p/user_pub/e3sm/jenkins/e3sm_diags/testdir/e3sm_diags_env_dev"
+def testdir3 = "/p/user_pub/e3sm/jenkins/e3sm_diags/testdir/e3sm_diags_from_conda"
 def cleanup_script = "${scripts_dir}/clean_testdir.py"
 
 try {
@@ -16,6 +17,7 @@ try {
        node('master') {
            sh "python ${cleanup_script} --testdir ${testdir1} --ndays 2"
            sh "python ${cleanup_script} --testdir ${testdir2} --ndays 2"
+           sh "python ${cleanup_script} --testdir ${testdir3} --ndays 2"
        }
     }
 } catch (caughtException) {

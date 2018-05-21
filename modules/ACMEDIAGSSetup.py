@@ -40,6 +40,17 @@ class ACMEDIAGSSetup:
                                                                       channel=channel)
         ret_code = run_cmd(cmd, True, False, True)
         print("CMD: {c}, ret_code: {ret_code}".format(c=cmd, ret_code=ret_code))
+        if ret_code != SUCCESS:
+            print("FAIL...{c}".format(c=cmd))
+            return ret_code
+
+        # conda list for debugging purpose
+        cmds_list = ["conda list"]
+        ret_code = run_in_conda_env(self.conda_path, env_name, cmds_list)
+        if ret_code != SUCCESS:
+            print("FAIL...{c}".format(c=cmd))
+            return ret_code
+
         return(ret_code)
 
     def create_env_from_yaml_file(self, env_name, env_file_url):
@@ -201,8 +212,8 @@ class ACMEDIAGSSetup:
         sbatch_out = "{f}.out".format(f=sbatch_file_prefix)
 
         str_to_grep = "Viewer HTML generated at:"
-        cmd = "tail -10 {output_file} | grep {grep_str}".format(output_file=sbatch_out,
-                                                                grep_str=str_to_grep)
+        cmd = "tail -10 {output_file} | grep \"{grep_str}\"".format(output_file=sbatch_out,
+                                                                           grep_str=str_to_grep)
         ret_code = run_cmd(cmd, True, True, True)
         if ret_code == SUCCESS:
             print("Good...expected html is generated")

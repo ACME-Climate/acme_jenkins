@@ -35,6 +35,7 @@ def run_command(cmd, join_stderr=True, shell_cmd=False, verbose=True, cwd=None):
             #print(decoded_str)
             print(read)
     ret_code = P.returncode
+    print("xxx xxx ret_code: {c}".format(c=ret_code))
     return(ret_code, out)
                                                                                               
 def run_cmd(cmd, join_stderr=True, shell_cmd=False, verbose=True, cwd=None):
