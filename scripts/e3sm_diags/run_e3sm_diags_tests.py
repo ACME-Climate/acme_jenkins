@@ -43,7 +43,8 @@ sys.stdout.flush()
 # TEMPORARY
 #
 
-cmd = "tail /var/www/acme/acme-diags/e3sm_diags_jenkins/acme_diags_conda_create_system_2018.05.21-09:06:20.out | grep \"Viewer HTML generated at:\""
+#cmd = "tail /var/www/acme/acme-diags/e3sm_diags_jenkins/acme_diags_conda_create_system_2018.05.21-09:06:20.out | grep \"Viewer HTML generated at:\""
+cmd = "grep \"Viewer HTML generated at:\" /var/www/acme/acme-diags/e3sm_diags_jenkins/acme_diags_conda_create_system_2018.05.21-09:06:20.out"
 ret_code = run_cmd(cmd, True, False, True)
 print("xxx xxx xxx xxx xxx CMD: {c}, ret_code: {r}".format(c=cmd, 
                                                            r=ret_code))
