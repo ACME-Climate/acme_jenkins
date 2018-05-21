@@ -33,7 +33,7 @@ try:
     print("after getting conda setup")
     env_name = args.env_name
     acme_diags_setup = ACMEDIAGSSetup.ACMEDIAGSSetup(conda_setup, env_name)
-    acme_diags_setup.create_env_from_conda_channel(env_name, 'nightly')
+    acme_diags_setup.create_env_from_conda_channel(env_name)
 
 except Exception as err:
     print("FAIL in creating {e} environment".format(e=env_name))

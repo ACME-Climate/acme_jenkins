@@ -32,7 +32,7 @@ class ACMEDIAGSSetup:
         if conda_label:
             channel = "-c e3sm/label/{c} -c anaconda -c conda-forge -c cdat".format(c=conda_label)
         else:
-            channel = "-c e3sm -c anaconda -c conda-forge -c cdat"
+            channel = "-c e3sm -c anaconda -c conda-forge -c cdat/label/nightly"
 
         conda_cmd = os.path.join(self.conda_path, 'conda')
         cmd = "{conda} create --name {e} e3sm_diags {channel}".format(conda=conda_cmd,
