@@ -24,6 +24,7 @@ class CondaSetup:
             if self.conda_path != None and os.path.isdir(self.conda_path) == True:
                 return(SUCCESS, self.conda_path)
         else:
+            print("DEBUG xxx...mkdir {w}".format(w=workdir))
             os.mkdir(workdir)
 
         url = "https://repo.continuum.io/miniconda"
@@ -44,6 +45,7 @@ class CondaSetup:
             source_script = os.path.join(url, conda_script)
             cmd = "wget {src} -O {dest}".format(src=source_script, dest=conda_script_full_path)
 
+        print("DEBUG ... RUNNING cmd: {c}".format(c=cmd))
         ret_code = run_cmd(cmd, True, False, True)
         if ret_code != SUCCESS:
             print("FAIL..." + cmd)
