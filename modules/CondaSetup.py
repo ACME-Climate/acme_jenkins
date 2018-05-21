@@ -12,7 +12,7 @@ class CondaSetup:
         self.workdir = workdir
         self.py_ver = py_ver
         os.system("uname -a")
-        self.__install_miniconda(workdir)
+        self.__install_miniconda()
 
     def __install_miniconda(self):
 
