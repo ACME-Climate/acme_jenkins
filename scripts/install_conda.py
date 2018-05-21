@@ -17,13 +17,17 @@ parser = argparse.ArgumentParser(description="install acme_diags",
 
 parser.add_argument("-w", "--workdir",
                     help="working directory where miniconda and acme_diags env will be created")
+parser.add_argument("-p", "--python_version", default = 'py2', 
+                    choices = ['py2', 'py3'])
 
 args = parser.parse_args()
 workdir = args.workdir
+py_ver = args.python_version
+
 status = SUCCESS
 
 try:
-    conda_setup = CondaSetup.CondaSetup(workdir)
+    conda_setup = CondaSetup.CondaSetup(workdir, py_ver)
 
 except:
     print("FAIL in installing anaconda")
