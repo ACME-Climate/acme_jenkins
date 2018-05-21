@@ -45,7 +45,7 @@ sys.stdout.flush()
 cmd = "tail -10 /var/www/acme/acme-diags/e3sm_diags_jenkins/acme_diags_conda_create_system_2018.05.21-09:06:20.out | grep \"Viewer HTML generated at:\""
 ret_code = run_cmd(cmd, True, True, True)
 print("xxx xxx xxx xxx xxx CMD: {c}, ret_code: {r}".format(c=cmd, 
-                                                           r=ret_code)
+                                                           r=ret_code))
 sys.exit(0)
 
 
