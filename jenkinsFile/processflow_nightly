@@ -9,12 +9,12 @@ def scripts_dir = "${jenkins_dir}/scripts"
 def install_conda = "${scripts_dir}/install_conda.py"
 def install_processflow = "${scripts_dir}/install_processflow.py"
 def run_processflow = "${scripts_dir}/run_processflow.py"
-def url		    = "https://github.com/ACME-Climate/e3sm_jenkins"
-
+def url = "https://github.com/E3SM-Project/e3sm_jenkins"
 
 try {
     stage('git_clone') {
        node('master') {
+          sh "mkdir -p ${processflow_dir}"
           sh "rm -rf ${jenkins_dir}"
           // for now clone from jenkins branch
           sh "git clone ${url} ${jenkins_dir}"
@@ -23,7 +23,7 @@ try {
     }
     stage('conda') {
        node('master') {
-          sh "python ${install_conda} -w ${workdir}"
+          sh "python ${install_conda} -w ${workdir} -p 'py2'"
        }
 
     }

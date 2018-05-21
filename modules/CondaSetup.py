@@ -16,6 +16,7 @@ class CondaSetup:
 
     def __install_miniconda(self):
 
+        print("DEBUG xxx...in __install_miniconda()")
         # create workdir if it does not exist
         workdir = self.workdir
         if os.path.isdir(workdir) == True:
@@ -48,6 +49,7 @@ class CondaSetup:
             print("FAIL..." + cmd)
             return(ret_code, None)
 
+        print("DEBUG xxx...after getting the miniconda.sh file")
         conda_dir = os.path.join(workdir, 'miniconda')
         cmd = "bash {script} -b -p {dir}".format(script=conda_script_full_path, 
                                                  dir=conda_dir)
