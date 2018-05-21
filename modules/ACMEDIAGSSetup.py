@@ -215,7 +215,7 @@ class ACMEDIAGSSetup:
         str_to_grep = "Viewer HTML generated at:"
         #cmd = "tail -10 {output_file} | grep \"{grep_str}\"".format(output_file=sbatch_out,
         #                                                                   grep_str=str_to_grep)
-        cmd = "grep \"${grep_str}\" {output_file}".format(output_file=sbatch_out,
+        cmd = "grep \"{grep_str}\" {output_file}".format(output_file=sbatch_out,
                                                           grep_str=str_to_grep)
         ret_code = run_cmd(cmd, True, False, True)
         if ret_code == SUCCESS:
