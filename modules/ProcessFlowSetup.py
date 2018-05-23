@@ -63,7 +63,7 @@ class ProcessFlowSetup:
         conda_cmd = os.path.join(conda_path, 'conda')
 
         
-        channels = "-c acme -c conda-forge -c cdat"
+        channels = "-c e3sm -c conda-forge -c cdat"
         cmd = "{conda} create --name {env} {c} processflow".format(conda=conda_cmd,
                                                                    env=env_name,
                                                                    c=channels)
@@ -101,7 +101,7 @@ class ProcessFlowSetup:
             return(ret_code)
 
         # check version of processflow
-        ret_code = self.__check_version(version)
+        ret_code1 = self.__check_version(version)
         return(ret_code)
 
     def run_processflow(self, conf_file):
