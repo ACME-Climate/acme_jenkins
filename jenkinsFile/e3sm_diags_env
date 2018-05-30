@@ -12,6 +12,7 @@ def run_e3sm_diags = "${scripts_dir}/e3sm_diags/run_e3sm_diags_tests.py"
 
 def url = "https://github.com/E3SM-Project/e3sm_jenkins"
 def env_name = "e3sm_diags_env"
+def email_addrs = "muryanto1@llnl.gov"
 
 try {
     stage('git_clone') {
@@ -74,6 +75,9 @@ try {
 } catch (caughtException) {
     error = caughtException
     currentBuild.result = "FAILURE"
+    node('master') {
+       step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: ${email_addrs}, sendToIndividuals: true])
+    }
 }
 
 
