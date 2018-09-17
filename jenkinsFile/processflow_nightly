@@ -32,9 +32,14 @@ try {
           sh "python ${install_processflow} -w ${workdir} -v 'nightly'"
        }
     }
-    stage('run_processflow') {
+    stage('run_1_interval') {
        node('master') {
           sh "export MODULESHOME=/usr/share/Modules; python ${run_processflow} -w ${workdir} -v 'nightly' -c '1.interval'"
+       }
+    }
+    stage('run_2_intervals') {
+       node('master') {
+          sh "export MODULESHOME=/usr/share/Modules; python ${run_processflow} -w ${workdir} -v 'nightly' -c '2.intervals'"
        }
     }
 } catch (caughtException) {
