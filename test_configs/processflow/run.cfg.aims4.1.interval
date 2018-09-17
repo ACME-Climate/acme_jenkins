@@ -75,10 +75,10 @@ sets = 3, 4, 5, 7, 13
  
 [transfer]
 # The Globus endpoint ID for the local host
-destination_endpoint = a871c6de-2acd-11e7-bc7c-22000b9a448b
+destination_endpoint = 43d64772-a82e-11e5-99d3-22000b96db58
  
 # The Globus endpoint ID for the remote host
-source_endpoint = 43d64772-a82e-11e5-99d3-22000b96db58
+source_endpoint = 9d6d994a-6d04-11e5-ba46-22000b92c6ec
  
 [amwg]
 # The location of the amwg code
